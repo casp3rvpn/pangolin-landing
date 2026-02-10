@@ -105,7 +105,11 @@ export default function App() {
             </div>
 
             <div className="md:hidden">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-300 hover:text-white p-2">
+              <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)} 
+                className="text-slate-300 hover:text-white p-2"
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
@@ -126,263 +130,266 @@ export default function App() {
         )}
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* ОПТИМИЗИРОВАННЫЙ ФОН: Вместо тяжелых blur div используем CSS градиенты */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent pointer-events-none"></div>
+      {/* Main Content Landmark for Accessibility */}
+      <main>
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden">
+          {/* ОПТИМИЗИРОВАННЫЙ ФОН: Вместо тяжелых blur div используем CSS градиенты */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-sm mb-6 sm:mb-8">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-sm font-medium text-slate-300">Open to new projects</span>
-          </div>
-          
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 sm:mb-8 leading-tight">
-            Building Complex <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">IT Solutions for Business</span>
-          </h1>
-          
-          <p className="max-w-2xl mx-auto text-lg sm:text-xl text-slate-400 mb-8 sm:mb-10 leading-relaxed">
-            Full-cycle development: from MVP to Enterprise systems. We turn your ideas into reliable code, scalable architecture, and real profit.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-bold transition-all shadow-lg hover:shadow-blue-600/30 flex items-center justify-center gap-2"
-            >
-              Get an Estimate
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button 
-              onClick={() => scrollToSection('portfolio')}
-              className="px-8 py-4 rounded-xl text-lg font-semibold text-slate-300 border border-slate-700 hover:bg-slate-800 hover:text-white transition-all flex items-center justify-center"
-            >
-              Our Work
-            </button>
-          </div>
-
-          {/* Tech Stack - Static on mobile for performance */}
-          <div className="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-slate-800/50">
-            <p className="text-sm text-slate-500 mb-6 uppercase tracking-wider font-semibold">Powered by modern stack</p>
-            <div className="flex flex-wrap justify-center gap-6 sm:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-              {['React', 'Node.js', 'Python', 'Flutter', 'PostgreSQL', 'AWS'].map((tech) => (
-                <span key={tech} className="text-lg sm:text-xl font-bold text-slate-400 hover:text-white transition-colors cursor-default">{tech}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section - with Content Visibility */}
-      <section id="benefits" className="py-16 sm:py-20 bg-slate-900/50 content-visibility-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <BenefitCard 
-              icon={<Zap className="w-8 h-8 text-yellow-400" />}
-              title="Development Speed"
-              desc="MVP launch in 4-8 weeks. Fast start allows you to test hypotheses and start earning sooner."
-            />
-            <BenefitCard 
-              icon={<ShieldCheck className="w-8 h-8 text-green-400" />}
-              title="Code Quality"
-              desc="Strict TypeScript, testing, Code Review, and CI/CD pipelines. We write code that is easy to maintain and scale."
-            />
-            <BenefitCard 
-              icon={<Users className="w-8 h-8 text-blue-400" />}
-              title="Transparency"
-              desc="Daily reports, Jira/Trello access, weekly demos. You always know the project status."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="py-16 sm:py-24 relative content-visibility-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Expertise</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">We handle all technical aspects so you can focus on business growth.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <ServiceCard 
-              icon={<Globe className="w-10 h-10 text-blue-500" />}
-              title="Web Development"
-              features={['Corporate portals', 'SaaS solutions', 'SPA & PWA', 'E-commerce platforms']}
-            />
-            <ServiceCard 
-              icon={<Smartphone className="w-10 h-10 text-purple-500" />}
-              title="Mobile Development"
-              features={['iOS & Android (Flutter/RN)', 'Store publication', 'Performance optimization', 'Adaptive UI/UX']}
-            />
-            <ServiceCard 
-              icon={<Database className="w-10 h-10 text-emerald-500" />}
-              title="Backend & DevOps"
-              features={['Microservices', 'High-load architecture', 'Cloud solutions (AWS/GCP)', 'CI/CD setup']}
-            />
-            <ServiceCard 
-              icon={<Code2 className="w-10 h-10 text-pink-500" />}
-              title="Outstaffing"
-              features={['Team augmentation', 'Middle/Senior developers', 'Fast onboarding', 'Transparent hour tracking']}
-            />
-             <ServiceCard 
-              icon={<Users className="w-10 h-10 text-orange-500" />}
-              title="IT Consulting"
-              features={['Architecture audit', 'Tech stack selection', 'Timeline & budget estimation', 'Technical specification']}
-            />
-            <ServiceCard 
-              icon={<ShieldCheck className="w-10 h-10 text-cyan-500" />}
-              title="Support & QA"
-              features={['24/7 monitoring', 'Manual & Auto testing', 'Legacy refactoring', 'SLA guarantees']}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio Section */}
-      <section id="portfolio" className="py-16 sm:py-24 bg-slate-900 border-y border-slate-800 content-visibility-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 text-blue-400 text-sm font-medium mb-4">
-              <Code2 size={16} />
-              Case Studies
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Portfolio</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Real problems we've solved for our clients.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <ProjectCard 
-              title="Burger King Unified Platform"
-              category="FoodTech / Enterprise"
-              description="A unified digital platform to power mobile, kiosk, and delivery experiences across multiple regions. Centralized orders, menus, and payments."
-              impact={['+15% delivery order volume', '-20% food waste', 'Zero downtime']}
-              tags={['High-load', 'Mobile', 'Kiosks']}
-              color="text-orange-500"
-            />
-            <ProjectCard 
-              title="Lendflow Infrastructure"
-              category="Fintech / SaaS"
-              description="Embedded lending platform for vertical-specific SaaS. We accelerated development to help them onboard new financial partners faster."
-              impact={['-30% integration time', '40% improved reliability', 'Scalable arch']}
-              tags={['Fintech', 'SaaS', 'API']}
-              color="text-blue-500"
-            />
-            <ProjectCard 
-              title="Dodo Pizza AI Inventory"
-              category="Retail / AI"
-              description="AI-powered inventory system to predict demand in real-time and automate restocking across a large franchise network."
-              impact={['Accurate forecasting', 'Reduced stock shortages', 'Automated supply']}
-              tags={['AI', 'Predictive Analytics', 'Retail']}
-              color="text-amber-500"
-            />
-            <ProjectCard 
-              title="Credit Fraud Detection"
-              category="Security / AI"
-              description="Cloud-based fraud detection platform for a European credit aggregator. Real-time analysis of loan applications using ML."
-              impact={['35% reduction in fraud', 'Faster credit approvals', 'Real-time monitoring']}
-              tags={['Machine Learning', 'Security', 'Cloud']}
-              color="text-emerald-500"
-            />
-             <ProjectCard 
-              title="HealthMatch Patient Portal"
-              category="Healthcare / HIPAA"
-              description="Secure patient portal for appointment scheduling and telemedicine. Fully compliant with HIPAA and GDPR regulations."
-              impact={['Secure encryption', 'Telemedicine integration', '24/7 access']}
-              tags={['Healthcare', 'React Native', 'WebRTC']}
-              color="text-red-500"
-            />
-            <ProjectCard 
-              title="Logistics Fleet Manager"
-              category="Logistics / IoT"
-              description="Real-time fleet tracking dashboard with IoT sensor integration for temperature monitoring and route optimization."
-              impact={['-15% fuel costs', 'Real-time cargo tracking', 'Driver analytics']}
-              tags={['IoT', 'Google Maps API', 'Big Data']}
-              color="text-cyan-500"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Process Section */}
-      <section id="process" className="py-16 sm:py-24 bg-slate-950 content-visibility-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="lg:w-1/2">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">How We Work</h2>
-              <p className="text-slate-400 mb-8 text-lg">
-                We work using Agile/Scrum methodology. This allows us to react flexibly to market changes and requirements during development while maintaining budget control.
-              </p>
-              
-              <div className="space-y-6">
-                <ProcessStep number="01" title="Analytics & Estimation" desc="Diving into business goals, creating technical specs and estimates." />
-                <ProcessStep number="02" title="Design & Prototyping" desc="Creating UI/UX mockups, approving interface logic." />
-                <ProcessStep number="03" title="Development Sprints" desc="Coding in 2-week iterations. Demo results at the end of each sprint." />
-                <ProcessStep number="04" title="Release & Support" desc="Launch assistance, monitoring, and feature development." />
-              </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-sm mb-6 sm:mb-8">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="text-sm font-medium text-slate-300">Open to new projects</span>
             </div>
             
-            {/* Картинку упрощаем для мобильных */}
-            <div className="lg:w-1/2 relative hidden sm:block">
-               <div className="absolute inset-0 bg-blue-600/20 blur-[60px] rounded-full"></div>
-               <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-                 <div className="space-y-6">
-                   <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                     <div className="flex gap-2">
-                       <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                       <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                       <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                     </div>
-                     <span className="text-xs text-slate-500">project_dashboard.tsx</span>
-                   </div>
-                   
-                   <div className="space-y-4">
-                     <div className="h-2 w-1/3 bg-slate-800 rounded"></div>
-                     <div className="grid grid-cols-2 gap-4">
-                       <div className="h-24 bg-slate-800/50 rounded border border-slate-800 p-4">
-                         <div className="h-2 w-8 bg-blue-500/50 rounded mb-2"></div>
-                         <div className="h-8 w-16 bg-slate-700 rounded"></div>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 sm:mb-8 leading-tight">
+              Building Complex <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">IT Solutions for Business</span>
+            </h1>
+            
+            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-slate-300 mb-8 sm:mb-10 leading-relaxed">
+              Full-cycle development: from MVP to Enterprise systems. We turn your ideas into reliable code, scalable architecture, and real profit.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-bold transition-all shadow-lg hover:shadow-blue-600/30 flex items-center justify-center gap-2"
+              >
+                Get an Estimate
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button 
+                onClick={() => scrollToSection('portfolio')}
+                className="px-8 py-4 rounded-xl text-lg font-semibold text-slate-300 border border-slate-700 hover:bg-slate-800 hover:text-white transition-all flex items-center justify-center"
+              >
+                Our Work
+              </button>
+            </div>
+
+            {/* Tech Stack - Static on mobile for performance */}
+            <div className="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-slate-800/50">
+              <p className="text-sm text-slate-400 mb-6 uppercase tracking-wider font-semibold">Powered by modern stack</p>
+              <div className="flex flex-wrap justify-center gap-6 sm:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+                {['React', 'Node.js', 'Python', 'Flutter', 'PostgreSQL', 'AWS'].map((tech) => (
+                  <span key={tech} className="text-lg sm:text-xl font-bold text-slate-400 hover:text-white transition-colors cursor-default">{tech}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section - with Content Visibility */}
+        <section id="benefits" className="py-16 sm:py-20 bg-slate-900/50 content-visibility-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              <BenefitCard 
+                icon={<Zap className="w-8 h-8 text-yellow-400" />}
+                title="Development Speed"
+                desc="MVP launch in 4-8 weeks. Fast start allows you to test hypotheses and start earning sooner."
+              />
+              <BenefitCard 
+                icon={<ShieldCheck className="w-8 h-8 text-green-400" />}
+                title="Code Quality"
+                desc="Strict TypeScript, testing, Code Review, and CI/CD pipelines. We write code that is easy to maintain and scale."
+              />
+              <BenefitCard 
+                icon={<Users className="w-8 h-8 text-blue-400" />}
+                title="Transparency"
+                desc="Daily reports, Jira/Trello access, weekly demos. You always know the project status."
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section id="services" className="py-16 sm:py-24 relative content-visibility-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Expertise</h2>
+              <p className="text-slate-300 max-w-2xl mx-auto">We handle all technical aspects so you can focus on business growth.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <ServiceCard 
+                icon={<Globe className="w-10 h-10 text-blue-500" />}
+                title="Web Development"
+                features={['Corporate portals', 'SaaS solutions', 'SPA & PWA', 'E-commerce platforms']}
+              />
+              <ServiceCard 
+                icon={<Smartphone className="w-10 h-10 text-purple-500" />}
+                title="Mobile Development"
+                features={['iOS & Android (Flutter/RN)', 'Store publication', 'Performance optimization', 'Adaptive UI/UX']}
+              />
+              <ServiceCard 
+                icon={<Database className="w-10 h-10 text-emerald-500" />}
+                title="Backend & DevOps"
+                features={['Microservices', 'High-load architecture', 'Cloud solutions (AWS/GCP)', 'CI/CD setup']}
+              />
+              <ServiceCard 
+                icon={<Code2 className="w-10 h-10 text-pink-500" />}
+                title="Outstaffing"
+                features={['Team augmentation', 'Middle/Senior developers', 'Fast onboarding', 'Transparent hour tracking']}
+              />
+               <ServiceCard 
+                icon={<Users className="w-10 h-10 text-orange-500" />}
+                title="IT Consulting"
+                features={['Architecture audit', 'Tech stack selection', 'Timeline & budget estimation', 'Technical specification']}
+              />
+              <ServiceCard 
+                icon={<ShieldCheck className="w-10 h-10 text-cyan-500" />}
+                title="Support & QA"
+                features={['24/7 monitoring', 'Manual & Auto testing', 'Legacy refactoring', 'SLA guarantees']}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio Section */}
+        <section id="portfolio" className="py-16 sm:py-24 bg-slate-900 border-y border-slate-800 content-visibility-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 text-blue-400 text-sm font-medium mb-4">
+                <Code2 size={16} />
+                Case Studies
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Portfolio</h2>
+              <p className="text-slate-300 max-w-2xl mx-auto">Real problems we've solved for our clients.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <ProjectCard 
+                title="Burger King Unified Platform"
+                category="FoodTech / Enterprise"
+                description="A unified digital platform to power mobile, kiosk, and delivery experiences across multiple regions. Centralized orders, menus, and payments."
+                impact={['+15% delivery order volume', '-20% food waste', 'Zero downtime']}
+                tags={['High-load', 'Mobile', 'Kiosks']}
+                color="text-orange-500"
+              />
+              <ProjectCard 
+                title="Lendflow Infrastructure"
+                category="Fintech / SaaS"
+                description="Embedded lending platform for vertical-specific SaaS. We accelerated development to help them onboard new financial partners faster."
+                impact={['-30% integration time', '40% improved reliability', 'Scalable arch']}
+                tags={['Fintech', 'SaaS', 'API']}
+                color="text-blue-500"
+              />
+              <ProjectCard 
+                title="Dodo Pizza AI Inventory"
+                category="Retail / AI"
+                description="AI-powered inventory system to predict demand in real-time and automate restocking across a large franchise network."
+                impact={['Accurate forecasting', 'Reduced stock shortages', 'Automated supply']}
+                tags={['AI', 'Predictive Analytics', 'Retail']}
+                color="text-amber-500"
+              />
+              <ProjectCard 
+                title="Credit Fraud Detection"
+                category="Security / AI"
+                description="Cloud-based fraud detection platform for a European credit aggregator. Real-time analysis of loan applications using ML."
+                impact={['35% reduction in fraud', 'Faster credit approvals', 'Real-time monitoring']}
+                tags={['Machine Learning', 'Security', 'Cloud']}
+                color="text-emerald-500"
+              />
+               <ProjectCard 
+                title="HealthMatch Patient Portal"
+                category="Healthcare / HIPAA"
+                description="Secure patient portal for appointment scheduling and telemedicine. Fully compliant with HIPAA and GDPR regulations."
+                impact={['Secure encryption', 'Telemedicine integration', '24/7 access']}
+                tags={['Healthcare', 'React Native', 'WebRTC']}
+                color="text-red-500"
+              />
+              <ProjectCard 
+                title="Logistics Fleet Manager"
+                category="Logistics / IoT"
+                description="Real-time fleet tracking dashboard with IoT sensor integration for temperature monitoring and route optimization."
+                impact={['-15% fuel costs', 'Real-time cargo tracking', 'Driver analytics']}
+                tags={['IoT', 'Google Maps API', 'Big Data']}
+                color="text-cyan-500"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Process Section */}
+        <section id="process" className="py-16 sm:py-24 bg-slate-950 content-visibility-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+              <div className="lg:w-1/2">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">How We Work</h2>
+                <p className="text-slate-300 mb-8 text-lg">
+                  We work using Agile/Scrum methodology. This allows us to react flexibly to market changes and requirements during development while maintaining budget control.
+                </p>
+                
+                <div className="space-y-6">
+                  <ProcessStep number="01" title="Analytics & Estimation" desc="Diving into business goals, creating technical specs and estimates." />
+                  <ProcessStep number="02" title="Design & Prototyping" desc="Creating UI/UX mockups, approving interface logic." />
+                  <ProcessStep number="03" title="Development Sprints" desc="Coding in 2-week iterations. Demo results at the end of each sprint." />
+                  <ProcessStep number="04" title="Release & Support" desc="Launch assistance, monitoring, and feature development." />
+                </div>
+              </div>
+              
+              {/* Картинку упрощаем для мобильных */}
+              <div className="lg:w-1/2 relative hidden sm:block">
+                 <div className="absolute inset-0 bg-blue-600/20 blur-[60px] rounded-full"></div>
+                 <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+                   <div className="space-y-6">
+                     <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                       <div className="flex gap-2">
+                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
                        </div>
-                       <div className="h-24 bg-slate-800/50 rounded border border-slate-800 p-4">
-                         <div className="h-2 w-8 bg-purple-500/50 rounded mb-2"></div>
-                         <div className="h-8 w-16 bg-slate-700 rounded"></div>
+                       <span className="text-xs text-slate-400">project_dashboard.tsx</span>
+                     </div>
+                     
+                     <div className="space-y-4">
+                       <div className="h-2 w-1/3 bg-slate-800 rounded"></div>
+                       <div className="grid grid-cols-2 gap-4">
+                         <div className="h-24 bg-slate-800/50 rounded border border-slate-800 p-4">
+                           <div className="h-2 w-8 bg-blue-500/50 rounded mb-2"></div>
+                           <div className="h-8 w-16 bg-slate-700 rounded"></div>
+                         </div>
+                         <div className="h-24 bg-slate-800/50 rounded border border-slate-800 p-4">
+                           <div className="h-2 w-8 bg-purple-500/50 rounded mb-2"></div>
+                           <div className="h-8 w-16 bg-slate-700 rounded"></div>
+                         </div>
                        </div>
                      </div>
                    </div>
                  </div>
-               </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 sm:py-24 bg-slate-950 relative overflow-hidden content-visibility-auto">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-12 border border-slate-800 shadow-2xl">
-            <div className="text-center mb-8 sm:mb-10">
-              <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4">Ready to discuss your project?</h2>
-              <p className="text-slate-400">Leave a request, and we will contact you within one business day for a free consultation and estimate.</p>
-            </div>
+        {/* Contact Section */}
+        <section id="contact" className="py-16 sm:py-24 bg-slate-950 relative overflow-hidden content-visibility-auto">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-12 border border-slate-800 shadow-2xl">
+              <div className="text-center mb-8 sm:mb-10">
+                <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4">Ready to discuss your project?</h2>
+                <p className="text-slate-300">Leave a request, and we will contact you within one business day for a free consultation and estimate.</p>
+              </div>
 
-            <ContactForm />
-            
-            <div className="mt-8 sm:mt-10 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-slate-400 text-sm sm:text-base">
-              <a href="mailto:v.kozlov@pangolindev.com" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
-                <Mail size={18} />
-                v.kozlov@pangolindev.com
-              </a>
-              <div className="hidden sm:block w-1 h-1 bg-slate-700 rounded-full"></div>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 size={18} className="text-green-500" />
-                NDA on request
-              </span>
+              <ContactForm />
+              
+              <div className="mt-8 sm:mt-10 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-slate-400 text-sm sm:text-base">
+                <a href="mailto:v.kozlov@pangolindev.com" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                  <Mail size={18} />
+                  v.kozlov@pangolindev.com
+                </a>
+                <div className="hidden sm:block w-1 h-1 bg-slate-700 rounded-full"></div>
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 size={18} className="text-green-500" />
+                  NDA on request
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-slate-900 py-8 sm:py-12">
@@ -393,15 +400,15 @@ export default function App() {
                 <Code2 className="text-blue-600 w-5 h-5" />
                 <span className="font-bold text-xl text-white">PangolinDev</span>
               </div>
-              <p className="text-slate-500 text-sm">Professional web and mobile development.</p>
+              <p className="text-slate-400 text-sm">Professional web and mobile development.</p>
             </div>
             
             <div className="flex gap-6 mb-4 md:mb-0">
-              <a href="https://www.linkedin.com/company/pangolin-development" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors"><Linkedin size={20} /></a>
+              <a href="https://www.linkedin.com/company/pangolin-development" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors" aria-label="LinkedIn Profile"><Linkedin size={20} /></a>
               <a href="https://clutch.co/profile/pangolin-development" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors" aria-label="Clutch Profile"><Star size={20} /></a>
             </div>
             
-            <div className="text-slate-600 text-sm">
+            <div className="text-slate-500 text-sm">
               &copy; {new Date().getFullYear()} PangolinDev. All rights reserved.
             </div>
           </div>
@@ -420,11 +427,11 @@ function ProjectCard({ title, category, description, impact, tags, color }) {
       <div className="p-6 sm:p-8 flex-1">
         <div className={`text-xs font-bold uppercase tracking-wider mb-2 ${color}`}>{category}</div>
         <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">{title}</h3>
-        <p className="text-slate-400 mb-6 text-sm sm:text-base">{description}</p>
+        <p className="text-slate-300 mb-6 text-sm sm:text-base">{description}</p>
         
         <div className="mb-6 space-y-2">
           {impact.map((item, idx) => (
-            <div key={idx} className="flex items-start gap-2 text-sm text-slate-300">
+            <div key={idx} className="flex items-start gap-2 text-sm text-slate-400">
               <TrendingUp size={16} className={`mt-0.5 ${color}`} />
               <span>{item}</span>
             </div>
@@ -452,7 +459,7 @@ function BenefitCard({ icon, title, desc }) {
         {icon}
       </div>
       <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
-      <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{desc}</p>
+      <p className="text-slate-300 leading-relaxed text-sm sm:text-base">{desc}</p>
     </div>
   );
 }
@@ -464,7 +471,7 @@ function ServiceCard({ icon, title, features }) {
       <h3 className="text-xl font-bold text-white mb-4">{title}</h3>
       <ul className="space-y-3">
         {features.map((feature, idx) => (
-          <li key={idx} className="flex items-start gap-3 text-slate-400">
+          <li key={idx} className="flex items-start gap-3 text-slate-300">
             <CheckCircle2 className="w-5 h-5 text-blue-500/50 flex-shrink-0 mt-0.5" />
             <span className="text-sm">{feature}</span>
           </li>
@@ -481,8 +488,8 @@ function ProcessStep({ number, title, desc }) {
         {number}
       </div>
       <div>
-        <h4 className="text-lg sm:text-xl font-bold text-white mb-2">{title}</h4>
-        <p className="text-slate-400 text-sm sm:text-base">{desc}</p>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{title}</h3>
+        <p className="text-slate-300 text-sm sm:text-base">{desc}</p>
       </div>
     </div>
   );
@@ -533,10 +540,10 @@ function ContactForm() {
           <CheckCircle2 className="w-8 h-8 text-green-500" />
         </div>
         <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-        <p className="text-slate-400">Thanks for reaching out. We will contact you at {formState.email || 'your email'} shortly.</p>
+        <p className="text-slate-300">Thanks for reaching out. We will contact you at {formState.email || 'your email'} shortly.</p>
         <button 
           onClick={() => setStatus('idle')}
-          className="mt-6 text-sm text-slate-500 hover:text-white underline"
+          className="mt-6 text-sm text-slate-400 hover:text-white underline"
         >
           Send another message
         </button>
