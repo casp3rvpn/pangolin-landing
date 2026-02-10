@@ -11,29 +11,39 @@ import {
   Mail, 
   Send, 
   Linkedin, 
-  Github,
   ChevronRight,
   Zap,
   ShieldCheck,
   Users,
   ExternalLink,
-  TrendingUp
+  TrendingUp,
+  Star
 } from 'lucide-react';
-import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
+// import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // ОПТИМИЗАЦИЯ: Предотвращение белого экрана и установка заголовка
+  // ОПТИМИЗАЦИЯ: SEO и производительность
   useLayoutEffect(() => {
-    // Установка заголовка страницы
+    // 1. Установка заголовка (Title)
     document.title = "Pangolin Development | Software Engineering & Product Development Services";
 
+    // 2. Установка мета-описания (Description)
+    let metaDescription = document.querySelector("meta[name=description]");
+    if (!metaDescription) {
+      metaDescription = document.createElement("meta");
+      metaDescription.name = "description";
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = "Full-cycle software development company. We build complex web & mobile applications, providing staff augmentation and IT consulting services for businesses worldwide.";
+
+    // 3. Темный фон для предотвращения белого экрана
     document.documentElement.style.backgroundColor = '#020617';
     document.body.style.backgroundColor = '#020617';
     
-    // Мета-тег для окраски интерфейса браузера
+    // 4. Мета-тег для окраски интерфейса браузера (Mobile Chrome/Safari)
     let metaThemeColor = document.querySelector("meta[name=theme-color]");
     if (!metaThemeColor) {
       metaThemeColor = document.createElement("meta");
@@ -387,8 +397,8 @@ export default function App() {
             </div>
             
             <div className="flex gap-6 mb-4 md:mb-0">
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Github size={20} /></a>
+              <a href="https://www.linkedin.com/company/pangolin-development" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors"><Linkedin size={20} /></a>
+              <a href="https://clutch.co/profile/pangolin-development" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors" aria-label="Clutch Profile"><Star size={20} /></a>
             </div>
             
             <div className="text-slate-600 text-sm">
