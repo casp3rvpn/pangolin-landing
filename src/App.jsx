@@ -25,8 +25,11 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // ОПТИМИЗАЦИЯ: Предотвращение белого экрана
+  // ОПТИМИЗАЦИЯ: Предотвращение белого экрана и установка заголовка
   useLayoutEffect(() => {
+    // Установка заголовка страницы
+    document.title = "Pangolin Development | Software Engineering & Product Development Services";
+
     document.documentElement.style.backgroundColor = '#020617';
     document.body.style.backgroundColor = '#020617';
     
