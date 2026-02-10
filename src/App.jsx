@@ -17,22 +17,20 @@ import {
   ShieldCheck,
   Users,
   ExternalLink,
-  TrendingUp,
-  BarChart3
+  TrendingUp
 } from 'lucide-react';
-// import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
+import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ (FIX WHITE SCREEN)
+  // ОПТИМИЗАЦИЯ: Предотвращение белого экрана
   useLayoutEffect(() => {
-    // 1. Принудительно ставим темный фон для body и html
     document.documentElement.style.backgroundColor = '#020617';
     document.body.style.backgroundColor = '#020617';
     
-    // 2. Красим адресную строку Safari/Chrome в цвет сайта
+    // Мета-тег для окраски интерфейса браузера
     let metaThemeColor = document.querySelector("meta[name=theme-color]");
     if (!metaThemeColor) {
       metaThemeColor = document.createElement("meta");
@@ -40,19 +38,13 @@ export default function App() {
       document.head.appendChild(metaThemeColor);
     }
     metaThemeColor.content = "#020617";
-    
-    // Очистка при размонтировании (опционально)
-    return () => {
-       // document.body.style.backgroundColor = ''; 
-    };
   }, []);
 
-  // Handle scroll for header transparency
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true }); // passive: true улучшает скролл на мобильных
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -65,33 +57,35 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden">
-      {/* Global Style Hack to prevent white flash before React loads css */}
+    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden relative">
+      {/* Критический CSS для мгновенного темного фона */}
       <style>{`
-        html, body { background-color: #020617 !important; }
-        /* Optimization for iOS scrolling */
+        :root { background-color: #020617; }
+        html, body, #root { background-color: #020617 !important; margin: 0; padding: 0; min-height: 100vh; }
         * { -webkit-tap-highlight-color: transparent; }
+        /* Оптимизация производительности рендеринга */
+        .content-visibility-auto { content-visibility: auto; contain-intrinsic-size: 1px 1000px; }
       `}</style>
 
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-slate-800' : 'bg-transparent'}`}>
+      <nav className={`fixed w-full z-50 transition-colors duration-300 ${scrolled ? 'bg-slate-950/90 backdrop-blur-md border-b border-slate-800' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16 sm:h-20">
             <div className="flex-shrink-0 cursor-pointer flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center transform rotate-3 hover:rotate-0 transition-all">
-                <Code2 className="text-white w-6 h-6" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Code2 className="text-white w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <span className="font-bold text-xl tracking-tight text-white">Pangolin<span className="text-blue-500">Dev</span></span>
+              <span className="font-bold text-lg sm:text-xl tracking-tight text-white">Pangolin<span className="text-blue-500">Dev</span></span>
             </div>
             
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <button onClick={() => scrollToSection('services')} className="text-sm font-medium hover:text-blue-400 transition-colors">Services</button>
               <button onClick={() => scrollToSection('portfolio')} className="text-sm font-medium hover:text-blue-400 transition-colors">Portfolio</button>
               <button onClick={() => scrollToSection('process')} className="text-sm font-medium hover:text-blue-400 transition-colors">Process</button>
               <button onClick={() => scrollToSection('benefits')} className="text-sm font-medium hover:text-blue-400 transition-colors">Benefits</button>
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)]"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-lg hover:shadow-blue-600/30"
               >
                 Let's Talk
               </button>
@@ -107,8 +101,8 @@ export default function App() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-slate-900 border-b border-slate-800">
-            <div className="px-4 pt-2 pb-6 space-y-2">
+          <div className="md:hidden bg-slate-900 border-b border-slate-800 absolute w-full left-0 top-full">
+            <div className="px-4 pt-2 pb-6 space-y-2 shadow-2xl">
               <button onClick={() => scrollToSection('services')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Services</button>
               <button onClick={() => scrollToSection('portfolio')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Portfolio</button>
               <button onClick={() => scrollToSection('process')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Process</button>
@@ -120,31 +114,30 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* Background Gradients - OPTIMIZED FOR MOBILE */}
-        {/* Added transform-gpu and will-change-transform for smoother rendering on iOS */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-600/20 rounded-full blur-[80px] sm:blur-[120px] -z-10 opacity-50 pointer-events-none transform-gpu will-change-transform"></div>
-        <div className="absolute bottom-0 right-0 w-[600px] sm:w-[800px] h-[400px] sm:h-[600px] bg-purple-600/10 rounded-full blur-[80px] sm:blur-[100px] -z-10 pointer-events-none transform-gpu will-change-transform"></div>
+      <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden">
+        {/* ОПТИМИЗИРОВАННЫЙ ФОН: Вместо тяжелых blur div используем CSS градиенты */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-sm mb-8 animate-fade-in-up">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-sm mb-6 sm:mb-8">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             <span className="text-sm font-medium text-slate-300">Open to new projects</span>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 sm:mb-8 leading-tight">
             Building Complex <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">IT Solutions for Business</span>
           </h1>
           
-          <p className="max-w-2xl mx-auto text-lg sm:text-xl text-slate-400 mb-10 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-lg sm:text-xl text-slate-400 mb-8 sm:mb-10 leading-relaxed">
             Full-cycle development: from MVP to Enterprise systems. We turn your ideas into reliable code, scalable architecture, and real profit.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button 
               onClick={() => scrollToSection('contact')}
-              className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-bold transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] flex items-center justify-center gap-2"
+              className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-bold transition-all shadow-lg hover:shadow-blue-600/30 flex items-center justify-center gap-2"
             >
               Get an Estimate
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -157,22 +150,22 @@ export default function App() {
             </button>
           </div>
 
-          {/* Tech Stack Preview */}
-          <div className="mt-20 pt-10 border-t border-slate-800/50">
+          {/* Tech Stack - Static on mobile for performance */}
+          <div className="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-slate-800/50">
             <p className="text-sm text-slate-500 mb-6 uppercase tracking-wider font-semibold">Powered by modern stack</p>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
               {['React', 'Node.js', 'Python', 'Flutter', 'PostgreSQL', 'AWS'].map((tech) => (
-                <span key={tech} className="text-xl font-bold text-slate-400 hover:text-white transition-colors cursor-default">{tech}</span>
+                <span key={tech} className="text-lg sm:text-xl font-bold text-slate-400 hover:text-white transition-colors cursor-default">{tech}</span>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section id="benefits" className="py-20 bg-slate-900/50">
+      {/* Benefits Section - with Content Visibility */}
+      <section id="benefits" className="py-16 sm:py-20 bg-slate-900/50 content-visibility-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <BenefitCard 
               icon={<Zap className="w-8 h-8 text-yellow-400" />}
               title="Development Speed"
@@ -193,14 +186,14 @@ export default function App() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 relative">
+      <section id="services" className="py-16 sm:py-24 relative content-visibility-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Expertise</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">We handle all technical aspects so you can focus on business growth.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <ServiceCard 
               icon={<Globe className="w-10 h-10 text-blue-500" />}
               title="Web Development"
@@ -236,9 +229,9 @@ export default function App() {
       </section>
 
       {/* Portfolio Section */}
-      <section id="portfolio" className="py-24 bg-slate-900 border-y border-slate-800">
+      <section id="portfolio" className="py-16 sm:py-24 bg-slate-900 border-y border-slate-800 content-visibility-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 text-blue-400 text-sm font-medium mb-4">
               <Code2 size={16} />
               Case Studies
@@ -247,12 +240,12 @@ export default function App() {
             <p className="text-slate-400 max-w-2xl mx-auto">Real problems we've solved for our clients.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <ProjectCard 
               title="Burger King Unified Platform"
               category="FoodTech / Enterprise"
               description="A unified digital platform to power mobile, kiosk, and delivery experiences across multiple regions. Centralized orders, menus, and payments."
-              impact={['+15% delivery order volume', '-20% food waste', 'Zero downtime during holidays']}
+              impact={['+15% delivery order volume', '-20% food waste', 'Zero downtime']}
               tags={['High-load', 'Mobile', 'Kiosks']}
               color="text-orange-500"
             />
@@ -260,7 +253,7 @@ export default function App() {
               title="Lendflow Infrastructure"
               category="Fintech / SaaS"
               description="Embedded lending platform for vertical-specific SaaS. We accelerated development to help them onboard new financial partners faster."
-              impact={['-30% integration time', '40% improved reliability', 'Scalable architecture']}
+              impact={['-30% integration time', '40% improved reliability', 'Scalable arch']}
               tags={['Fintech', 'SaaS', 'API']}
               color="text-blue-500"
             />
@@ -268,7 +261,7 @@ export default function App() {
               title="Dodo Pizza AI Inventory"
               category="Retail / AI"
               description="AI-powered inventory system to predict demand in real-time and automate restocking across a large franchise network."
-              impact={['Accurate demand forecasting', 'Reduced stock shortages', 'Automated supply chain']}
+              impact={['Accurate forecasting', 'Reduced stock shortages', 'Automated supply']}
               tags={['AI', 'Predictive Analytics', 'Retail']}
               color="text-amber-500"
             />
@@ -284,7 +277,7 @@ export default function App() {
               title="HealthMatch Patient Portal"
               category="Healthcare / HIPAA"
               description="Secure patient portal for appointment scheduling and telemedicine. Fully compliant with HIPAA and GDPR regulations."
-              impact={['Secure data encryption', 'Telemedicine integration', '24/7 patient access']}
+              impact={['Secure encryption', 'Telemedicine integration', '24/7 access']}
               tags={['Healthcare', 'React Native', 'WebRTC']}
               color="text-red-500"
             />
@@ -292,7 +285,7 @@ export default function App() {
               title="Logistics Fleet Manager"
               category="Logistics / IoT"
               description="Real-time fleet tracking dashboard with IoT sensor integration for temperature monitoring and route optimization."
-              impact={['-15% fuel costs', 'Real-time cargo tracking', 'Driver behavior analytics']}
+              impact={['-15% fuel costs', 'Real-time cargo tracking', 'Driver analytics']}
               tags={['IoT', 'Google Maps API', 'Big Data']}
               color="text-cyan-500"
             />
@@ -301,9 +294,9 @@ export default function App() {
       </section>
 
       {/* Process Section */}
-      <section id="process" className="py-24 bg-slate-950">
+      <section id="process" className="py-16 sm:py-24 bg-slate-950 content-visibility-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-16 items-center">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
             <div className="lg:w-1/2">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">How We Work</h2>
               <p className="text-slate-400 mb-8 text-lg">
@@ -318,8 +311,9 @@ export default function App() {
               </div>
             </div>
             
-            <div className="lg:w-1/2 relative">
-               <div className="absolute inset-0 bg-blue-600/20 blur-[100px] rounded-full"></div>
+            {/* Картинку упрощаем для мобильных */}
+            <div className="lg:w-1/2 relative hidden sm:block">
+               <div className="absolute inset-0 bg-blue-600/20 blur-[60px] rounded-full"></div>
                <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
                  <div className="space-y-6">
                    <div className="flex items-center justify-between border-b border-slate-800 pb-4">
@@ -343,18 +337,6 @@ export default function App() {
                          <div className="h-8 w-16 bg-slate-700 rounded"></div>
                        </div>
                      </div>
-                     <div className="h-32 bg-slate-800/30 rounded border border-slate-800 flex items-center justify-center text-slate-600 text-sm">
-                       Architecture Diagram Preview
-                     </div>
-                   </div>
-                   
-                   <div className="pt-4 flex justify-between items-center">
-                      <div className="flex -space-x-2">
-                        {[1,2,3].map(i => (
-                          <div key={i} className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-950 flex items-center justify-center text-[10px]">Dev</div>
-                        ))}
-                      </div>
-                      <span className="text-xs text-green-400 font-mono">Build Passing</span>
                    </div>
                  </div>
                </div>
@@ -364,20 +346,17 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-slate-950 relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none"></div>
-
+      <section id="contact" className="py-16 sm:py-24 bg-slate-950 relative overflow-hidden content-visibility-auto">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-slate-800 shadow-2xl">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to discuss your project?</h2>
+          <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-12 border border-slate-800 shadow-2xl">
+            <div className="text-center mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4">Ready to discuss your project?</h2>
               <p className="text-slate-400">Leave a request, and we will contact you within one business day for a free consultation and estimate.</p>
             </div>
 
             <ContactForm />
             
-            <div className="mt-10 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-slate-400">
+            <div className="mt-8 sm:mt-10 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-slate-400 text-sm sm:text-base">
               <a href="mailto:v.kozlov@pangolindev.com" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                 <Mail size={18} />
                 v.kozlov@pangolindev.com
@@ -393,11 +372,11 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-12">
+      <footer className="bg-slate-950 border-t border-slate-900 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="mb-4 md:mb-0 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                 <Code2 className="text-blue-600 w-5 h-5" />
                 <span className="font-bold text-xl text-white">PangolinDev</span>
               </div>
@@ -424,11 +403,11 @@ export default function App() {
 
 function ProjectCard({ title, category, description, impact, tags, color }) {
   return (
-    <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-slate-700 transition-all hover:shadow-xl group flex flex-col">
-      <div className="p-8 flex-1">
+    <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-slate-700 transition-all hover:shadow-xl group flex flex-col h-full">
+      <div className="p-6 sm:p-8 flex-1">
         <div className={`text-xs font-bold uppercase tracking-wider mb-2 ${color}`}>{category}</div>
-        <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">{title}</h3>
-        <p className="text-slate-400 mb-6">{description}</p>
+        <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">{title}</h3>
+        <p className="text-slate-400 mb-6 text-sm sm:text-base">{description}</p>
         
         <div className="mb-6 space-y-2">
           {impact.map((item, idx) => (
@@ -455,19 +434,19 @@ function ProjectCard({ title, category, description, impact, tags, color }) {
 
 function BenefitCard({ icon, title, desc }) {
   return (
-    <div className="bg-slate-900 p-8 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all hover:shadow-lg group">
+    <div className="bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all hover:shadow-lg group h-full">
       <div className="mb-6 bg-slate-950 w-16 h-16 rounded-xl flex items-center justify-center border border-slate-800 group-hover:scale-110 transition-transform">
         {icon}
       </div>
       <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
-      <p className="text-slate-400 leading-relaxed">{desc}</p>
+      <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{desc}</p>
     </div>
   );
 }
 
 function ServiceCard({ icon, title, features }) {
   return (
-    <div className="bg-slate-900/40 p-8 rounded-2xl border border-slate-800 hover:bg-slate-900 transition-colors group">
+    <div className="bg-slate-900/40 p-6 sm:p-8 rounded-2xl border border-slate-800 hover:bg-slate-900 transition-colors group h-full">
       <div className="mb-6">{icon}</div>
       <h3 className="text-xl font-bold text-white mb-4">{title}</h3>
       <ul className="space-y-3">
@@ -478,22 +457,19 @@ function ServiceCard({ icon, title, features }) {
           </li>
         ))}
       </ul>
-      <div className="mt-6 pt-6 border-t border-slate-800/50 flex items-center text-blue-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-        Learn more <ChevronRight size={16} />
-      </div>
     </div>
   );
 }
 
 function ProcessStep({ number, title, desc }) {
   return (
-    <div className="flex gap-6">
-      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-blue-500 font-bold border border-slate-700">
+    <div className="flex gap-4 sm:gap-6">
+      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-800 flex items-center justify-center text-blue-500 font-bold border border-slate-700 text-sm sm:text-base">
         {number}
       </div>
       <div>
-        <h4 className="text-xl font-bold text-white mb-2">{title}</h4>
-        <p className="text-slate-400">{desc}</p>
+        <h4 className="text-lg sm:text-xl font-bold text-white mb-2">{title}</h4>
+        <p className="text-slate-400 text-sm sm:text-base">{desc}</p>
       </div>
     </div>
   );
