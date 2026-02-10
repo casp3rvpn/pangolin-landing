@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/next"
 import React, { useState, useEffect } from 'react';
 import { 
   Code2, 
@@ -21,6 +20,7 @@ import {
   TrendingUp,
   BarChart3
 } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,7 +55,7 @@ export default function App() {
               </div>
               <span className="font-bold text-xl tracking-tight text-white">Pangolin<span className="text-blue-500">Dev</span></span>
             </div>
-		            
+            
             <div className="hidden md:flex items-center space-x-8">
               <button onClick={() => scrollToSection('services')} className="text-sm font-medium hover:text-blue-400 transition-colors">Services</button>
               <button onClick={() => scrollToSection('portfolio')} className="text-sm font-medium hover:text-blue-400 transition-colors">Portfolio</button>
@@ -386,6 +386,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
