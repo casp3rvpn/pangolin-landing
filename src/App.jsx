@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { 
   Code2, 
   Smartphone, 
@@ -20,11 +20,32 @@ import {
   TrendingUp,
   BarChart3
 } from 'lucide-react';
-import { Analytics } from '@vercel/analytics/react';
+// import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ (FIX WHITE SCREEN)
+  useLayoutEffect(() => {
+    // 1. Принудительно ставим темный фон для body и html
+    document.documentElement.style.backgroundColor = '#020617';
+    document.body.style.backgroundColor = '#020617';
+    
+    // 2. Красим адресную строку Safari/Chrome в цвет сайта
+    let metaThemeColor = document.querySelector("meta[name=theme-color]");
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement("meta");
+      metaThemeColor.name = "theme-color";
+      document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.content = "#020617";
+    
+    // Очистка при размонтировании (опционально)
+    return () => {
+       // document.body.style.backgroundColor = ''; 
+    };
+  }, []);
 
   // Handle scroll for header transparency
   useEffect(() => {
@@ -44,7 +65,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden">
+      {/* Global Style Hack to prevent white flash before React loads css */}
+      <style>{`
+        html, body { background-color: #020617 !important; }
+        /* Optimization for iOS scrolling */
+        * { -webkit-tap-highlight-color: transparent; }
+      `}</style>
+
       {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-slate-800' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,9 +121,10 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10 opacity-50 pointer-events-none"></div>
-        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-purple-600/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+        {/* Background Gradients - OPTIMIZED FOR MOBILE */}
+        {/* Added transform-gpu and will-change-transform for smoother rendering on iOS */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-600/20 rounded-full blur-[80px] sm:blur-[120px] -z-10 opacity-50 pointer-events-none transform-gpu will-change-transform"></div>
+        <div className="absolute bottom-0 right-0 w-[600px] sm:w-[800px] h-[400px] sm:h-[600px] bg-purple-600/10 rounded-full blur-[80px] sm:blur-[100px] -z-10 pointer-events-none transform-gpu will-change-transform"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-sm mb-8 animate-fade-in-up">
@@ -386,7 +415,7 @@ export default function App() {
           </div>
         </div>
       </footer>
-      <Analytics />
+      {/* <Analytics /> РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ */}
     </div>
   );
 }
