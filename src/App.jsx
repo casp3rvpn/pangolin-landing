@@ -44,7 +44,6 @@ export default function App() {
   };
 
   return (
-	<Analytics />
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500 selection:text-white">
       {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-slate-800' : 'bg-transparent'}`}>
@@ -56,7 +55,7 @@ export default function App() {
               </div>
               <span className="font-bold text-xl tracking-tight text-white">Pangolin<span className="text-blue-500">Dev</span></span>
             </div>
-            
+		            
             <div className="hidden md:flex items-center space-x-8">
               <button onClick={() => scrollToSection('services')} className="text-sm font-medium hover:text-blue-400 transition-colors">Services</button>
               <button onClick={() => scrollToSection('portfolio')} className="text-sm font-medium hover:text-blue-400 transition-colors">Portfolio</button>
