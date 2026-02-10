@@ -17,9 +17,12 @@ import {
   Users,
   ExternalLink,
   TrendingUp,
-  Star
+  Star,
+  Workflow,
+  Bot,
+  Cpu
 } from 'lucide-react';
-// import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
+import { Analytics } from '@vercel/analytics/react'; // РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -93,6 +96,7 @@ export default function App() {
             
             <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <button onClick={() => scrollToSection('services')} className="text-sm font-medium hover:text-blue-400 transition-colors">Services</button>
+              <button onClick={() => scrollToSection('automation')} className="text-sm font-medium hover:text-blue-400 transition-colors">Automation</button>
               <button onClick={() => scrollToSection('portfolio')} className="text-sm font-medium hover:text-blue-400 transition-colors">Portfolio</button>
               <button onClick={() => scrollToSection('process')} className="text-sm font-medium hover:text-blue-400 transition-colors">Process</button>
               <button onClick={() => scrollToSection('benefits')} className="text-sm font-medium hover:text-blue-400 transition-colors">Benefits</button>
@@ -121,6 +125,7 @@ export default function App() {
           <div className="md:hidden bg-slate-900 border-b border-slate-800 absolute w-full left-0 top-full">
             <div className="px-4 pt-2 pb-6 space-y-2 shadow-2xl">
               <button onClick={() => scrollToSection('services')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Services</button>
+              <button onClick={() => scrollToSection('automation')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Automation</button>
               <button onClick={() => scrollToSection('portfolio')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Portfolio</button>
               <button onClick={() => scrollToSection('process')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Process</button>
               <button onClick={() => scrollToSection('benefits')} className="block w-full text-left px-3 py-3 text-base font-medium hover:bg-slate-800 rounded-md">Benefits</button>
@@ -243,6 +248,111 @@ export default function App() {
                 title="Support & QA"
                 features={['24/7 monitoring', 'Manual & Auto testing', 'Legacy refactoring', 'SLA guarantees']}
               />
+            </div>
+          </div>
+        </section>
+
+        {/* AI & Automation Section (NEW) */}
+        <section id="automation" className="py-16 sm:py-24 bg-slate-900 border-y border-slate-800 content-visibility-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+              <div className="lg:w-1/2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-900/30 text-purple-400 text-sm font-medium mb-6">
+                  <Bot size={16} />
+                  AI & Automation
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  Automate Operations with <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Advanced AI Agents</span>
+                </h2>
+                <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+                  We help companies streamline processes and reduce operational costs by implementing cutting-edge automation using <strong>n8n</strong> and <strong>OpenClaw</strong>. Move beyond simple scripts to intelligent, scalable workflows.
+                </p>
+                
+                <div className="space-y-6">
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-pink-500 border border-slate-700">
+                      <Workflow size={24} />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-1">Workflow Automation (n8n)</h3>
+                      <p className="text-slate-400 text-sm">Connect your CRM, Slack, Email, and internal tools into seamless workflows without technical debt. Self-hosted and secure.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-purple-500 border border-slate-700">
+                      <Cpu size={24} />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-1">Intelligent Processing (OpenClaw)</h3>
+                      <p className="text-slate-400 text-sm">Deploy powerful AI agents for data extraction, content generation, and decision making that work 24/7 with zero downtime.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-10">
+                  <button onClick={() => scrollToSection('contact')} className="text-white bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-all shadow-lg hover:shadow-purple-600/25 flex items-center gap-2">
+                    Discuss Automation
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="lg:w-1/2 relative w-full">
+                <div className="relative bg-slate-950 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden group">
+                  {/* Decorative Elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl -z-10"></div>
+                  
+                  <div className="flex items-center justify-between mb-8 border-b border-slate-800 pb-4">
+                    <span className="text-xs font-mono text-slate-500">workflow_v2.json</span>
+                    <span className="flex gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                      <span className="text-xs text-green-500 font-medium">Active</span>
+                    </span>
+                  </div>
+
+                  {/* Flow Visualization */}
+                  <div className="space-y-6 relative">
+                    {/* Node 1 */}
+                    <div className="flex items-center gap-4 p-3 rounded-lg border border-slate-800 bg-slate-900/50">
+                      <div className="w-8 h-8 rounded bg-blue-600/20 flex items-center justify-center text-blue-400"><Mail size={16} /></div>
+                      <div>
+                        <div className="text-xs text-slate-500">Trigger</div>
+                        <div className="text-sm text-white font-medium">New Email Inquiry</div>
+                      </div>
+                    </div>
+                    
+                    {/* Connector */}
+                    <div className="h-6 w-0.5 bg-slate-700 mx-auto"></div>
+
+                    {/* Node 2 */}
+                    <div className="flex items-center gap-4 p-3 rounded-lg border border-purple-500/30 bg-purple-900/10">
+                      <div className="w-8 h-8 rounded bg-purple-600/20 flex items-center justify-center text-purple-400"><Cpu size={16} /></div>
+                      <div>
+                        <div className="text-xs text-purple-400">AI Agent (OpenClaw)</div>
+                        <div className="text-sm text-white font-medium">Analyze Intent & Extract Data</div>
+                      </div>
+                    </div>
+
+                    {/* Connector */}
+                    <div className="h-6 w-0.5 bg-slate-700 mx-auto"></div>
+
+                    {/* Split Nodes */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 rounded-lg border border-slate-800 bg-slate-900/50 text-center">
+                        <div className="w-6 h-6 rounded bg-orange-600/20 flex items-center justify-center text-orange-400 mx-auto mb-2"><Database size={14} /></div>
+                        <div className="text-xs text-slate-300">Update CRM</div>
+                      </div>
+                      <div className="p-3 rounded-lg border border-slate-800 bg-slate-900/50 text-center">
+                        <div className="w-6 h-6 rounded bg-green-600/20 flex items-center justify-center text-green-400 mx-auto mb-2"><Send size={14} /></div>
+                        <div className="text-xs text-slate-300">Draft Reply</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
