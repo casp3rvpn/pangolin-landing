@@ -524,7 +524,7 @@ export default function App() {
           </div>
         </div>
       </footer>
-      {/* <Analytics /> РАСКОММЕНТИРОВАТЬ ПЕРЕД ДЕПЛОЕМ */}
+      <Analytics />
     </div>
   );
 }
